@@ -1,4 +1,4 @@
-import src.constants as vals
+import src.constants.constants as vals
 
 
 class Car:
@@ -12,8 +12,8 @@ class Car:
         self.height = vals.CAR_HEIGHT
 
 
-class MyCar(Car):
-    # MyCar class specifies distinct features of player's car
+class My_car(Car):
+    # My_car class specifies distinct features of player's car
     def __init__(self, x, y):
         super().__init__(x, y)
 
@@ -27,8 +27,8 @@ class MyCar(Car):
             self.x = self.x + vals.CAR_HEIGHT
 
 
-class EnemyCar(Car):
-    # EnemyCar class specifies distinct features of all enemy cars
+class Enemy_car(Car):
+    # Enemy_car class specifies distinct features of all enemy cars
     def __init__(self, x, y):
         super().__init__(x, y)
         # active bool will help to remove the car from the state

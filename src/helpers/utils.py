@@ -1,9 +1,10 @@
 import random
 from helpers.core import *
-import src.constants as vals
+import src.constants.constants as vals
 
 
-def addNewCar(cars, lines):
+def add_new_car(cars, lines):
+    # add_new_car will add a new enemy_car on the top level of one of the lines picked randomly
     index = random.randint(0, 2)
     # Y coordinate of new cars
     y = vals.MARGIN + vals.CAR_WIDTH
@@ -18,4 +19,23 @@ def addNewCar(cars, lines):
 
     car = Car(x, y)
     cars.append(car)
+    return cars
+
+
+def move_cars(cars):
+    # move_cars calls move method of each car in cars state if the car is active
+    for car in cars:
+        if car.active == True:
+            car.move()
+
+    return cars
+
+
+def deactivate_cars(cars):
+    # deactivate_cars checks if a car is outside of map boundaries and deactivates it
+    for car in cars:
+        # If the enemy_car has reached the bottom of any road line, deactivate it
+        if car.y >= vals.HEIGHT - vals.MARGIN - vals.CAR_HEIGHT/2:
+            car.active = False
+
     return cars
