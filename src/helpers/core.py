@@ -1,12 +1,15 @@
+import src.constants as vals
+
+
 class Car:
     # Car class is representing common values of all cars in the game
     def __init__(self, x, y):
         self.x = x
         self.y = y
         # width is originating from car image width
-        self.width = 40
+        self.width = vals.CAR_WIDTH
         # height is originating from car image width
-        self.height = 80
+        self.height = vals.CAR_HEIGHT
 
 
 class MyCar(Car):
@@ -19,9 +22,9 @@ class MyCar(Car):
         # 40 is the distance form the left wall to the center of the 1st road line
         if direction == "left" and self.x > 40:
             # 80 is the distance between the road lines
-            self.x = self.x - 80
-        elif direction == "right" and self.x < self.width - 40:
-            self.x = self.x + 80
+            self.x = self.x - vals.CAR_HEIGHT
+        elif direction == "right" and self.x < self.width - vals.CAR_WIDTH:
+            self.x = self.x + vals.CAR_HEIGHT
 
 
 class EnemyCar(Car):
