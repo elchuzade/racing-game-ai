@@ -11,24 +11,30 @@ class Car:
 
 class MyCar(Car):
     # MyCar class specifies distinct features of player's car
-    # move method allows to move the car to the left or right
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
     def move(self, direction):
+        # move method allows to move the car to the left or right
         # 40 is the distance form the left wall to the center of the 1st road line
         if direction == "left" and self.x > 40:
             # 80 is the distance between the road lines
             self.x = self.x - 80
-        elif direction == "right" and self.x < width - 40:
+        elif direction == "right" and self.x < self.width - 40:
             self.x = self.x + 80
 
 
 class EnemyCar(Car):
-    # active bool will help to remove the car from the state
-    self.active = True
+    # EnemyCar class specifies distinct features of all enemy cars
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        # active bool will help to remove the car from the state
+        self.active = True
 
-    # move method descends a car by its height ( 80px )
     def move(self):
+        # move method descends a car by its height ( 80px )
         self.y = self.y + self.height
 
-    # deactivate method changes car's state to be removed later
     def deactivate(self):
+        # deactivate method changes car's state to be removed later
         self.active = False
