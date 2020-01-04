@@ -3,6 +3,7 @@ from keras.models import load_model
 from helpers.utils import *
 from helpers.core import *
 import constants.constants as vals
+from data.data import *
 
 model = load_model('./models/categorical_crossentropy_10k.h5')
 
@@ -25,7 +26,7 @@ ai = False
 # Set True if you want to collect state at every frame for data analytics
 collect_data = True
 # Decide on amount of rows after which data should be saved
-rows = 500
+rows = 10000
 
 counter = 0
 while stop == False:
@@ -67,7 +68,7 @@ while stop == False:
     # Increase a frame counter
     counter += 1
     # Perform this action every frame
-    if counter % 1 == 0:
+    if counter % 30 == 0:
         if ai == True:
             # Test your ai model's performance
             ai_model(model, cars, my_car)
@@ -76,14 +77,14 @@ while stop == False:
             autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
-    if counter % 2 == 0:
+    if counter % 60 == 0:
         add_new_car(cars)
 
     if collect_data == True:
         if counter == rows:
-            save_data(data, rows)
-        elif counter <= rows:
-            print("Counter - ", counter, " / ", rows)
+            save_data(data)
+        # elif counter <= rows:
+            # print("Counter - ", counter, " / ", rows)
 
     check_if_lost(stop, cars, my_car)
 

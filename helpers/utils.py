@@ -93,19 +93,20 @@ def find_my_position(my_car):
 
 
 def find_closest_car(lines, index):
-    # find a return the distance to the first car on a line given by index
-    # count is to return distance 1 step higher then amount of rows incase no cars were found in the line
+    # Find and return the distance to the first car on a line given by index
     count = 0
+    # Loops through each line and finds the number 2 which represents the enemy car
     for i in range(len(lines[index])):
+        # When found an enemy car returns a distance from my car to enemy car
         if lines[index][len(lines[index]) - 1 - i] == 2:
             return i
-        count = count + 1
-
-    return count
+        count += 1
+    # Returns length - 1 if there are no enemy cars ( -1 because 1 line is under my car ie invisible and 7 lines are on the map, so the top line should be index as 7)
+    return count - 1
 
 
 def find_all_distances(lines):
-    # returns an array of 3 values representing distances to the nearest cars on each road line
+    # Returns an array of 3 values representing distances to the nearest cars on each road line
     all_distances = []
 
     distance_0 = find_closest_car(lines, 0)
@@ -166,14 +167,8 @@ def check_if_lost(stop, cars, my_car):
     for car in cars:
         if car.x == my_car.x and car.y == my_car.y:
             stop = True
-            # pygame.quit()
-            # raise SystemExit
-
-
-def save_data(data, rows):
-    # Writes all info from data into corresponding file
-    write_data(data)
-    print("Saved data into file named - " + "file " + str(len(data)))
+            pygame.quit()
+            raise SystemExit
 
 
 def save_data_row(data, action, my_position, all_distances):
