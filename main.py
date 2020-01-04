@@ -19,6 +19,7 @@ data = []
 my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 
 stop = False
+ai = True
 counter = 0
 while stop == False:
     # limit runtime speed to 30 frames/second
@@ -61,7 +62,10 @@ while stop == False:
     # Perform this action every frame
     if counter % 1 == 0:
         # Collect data by playing autopilot mode
-        autopilot(data, cars, my_car)
+        if ai == True:
+            ai_model(model, cars, my_car)
+        else:
+            autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
     if counter % 2 == 0:

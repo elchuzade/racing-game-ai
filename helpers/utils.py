@@ -57,7 +57,7 @@ def draw_cars(screen, cars):
 def draw_my_car(screen, my_car):
     # draw_my_car will draw my car on screen using its icon
     screen.blit(vals.MY_CAR, (my_car.x - my_car.width /
-                             2, my_car.y - my_car.height/2))
+                              2, my_car.y - my_car.height/2))
 
 
 def draw_vertical_lines(screen):
@@ -203,8 +203,11 @@ def predict(input_array, model):
         return "right"
 
 
-def build_input_state(my_position, all_distances):
+def build_input_state(cars, my_car):
     # Turns all input variables into a single array
+    my_position = find_my_position(my_car)
+    lines = map_cars_to_lines(cars, my_car)
+    all_distances = find_all_distances(lines)
     return [my_position, all_distances[0], all_distances[1], all_distances[2]]
 
 
@@ -214,3 +217,14 @@ def autopilot(data, cars, my_car):
     action, my_position, all_distances = choose_action(cars, my_car)
     perform_action(action, my_car)
     save_data_row(data, action, my_position, all_distances)
+
+
+def ai_model(model, cars, my_car):
+    # AI will put state into model, predict the action and perform it
+    move_cars(cars)
+    # Build input array for ai model
+    input_state = build_input_state(cars, my_car)
+    # Pass input through model to find action
+    action = predict(input_state, model)
+    # Perform the action suggested by ai model
+    perform_action(action, my_car)
