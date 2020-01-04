@@ -20,13 +20,7 @@ MY_CAR_Y = HEIGHT - MARGIN - CAR_HEIGHT/2
 
 # Colors in a format accepted by pygame
 BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
 GREY = (150, 150, 150)
-GREEN = (0, 255, 0)
 
-# Size is the game screen size in pixels
-SIZE = width, height = WIDTH, HEIGHT
-SCREEN = pygame.display.set_mode(SIZE)
-
-MY_CAR = pygame.image.load('./src/img/my_car.png')
-ENEMY_CAR = pygame.image.load('./src/img/enemy_car.png')
+MY_CAR = pygame.image.load('./img/my_car.png')
+ENEMY_CAR = pygame.image.load('./img/enemy_car.png')

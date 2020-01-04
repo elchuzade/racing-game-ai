@@ -1,25 +1,26 @@
 import pygame
 from keras.models import load_model
-from src.helpers.utils import *
-from src.helpers.core import *
-import src.constants.constants as vals
+from helpers.utils import *
+from helpers.core import *
+import constants.constants as vals
 
 model = load_model('./models/categorical_crossentropy_10k.h5')
 
 pygame.init()
 
-pygame.display.flip()
+SCREEN = initialize_screen()
+
 # Clock is set to keep track of frames
 clock = pygame.time.Clock()
 
 cars = []
-
 data = []
 
 my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 
+stop = False
 counter = 0
-while 1:
+while stop == False:
     # limit runtime speed to 30 frames/second
     clock.tick(30)
     pygame.event.pump()
@@ -43,18 +44,18 @@ while 1:
             raise SystemExit
 
         # Build up a black screen as a game background
-    vals.SCREEN.fill(vals.BLACK)
+    SCREEN.fill(vals.BLACK)
     # Draw two road separater lines
-    draw_vertical_lines()
+    draw_vertical_lines(SCREEN)
     # Remove cars that are out of map boundaries
     deactivate_cars(cars)
-
+    # filter out not active cars
+    cars = list(filter(lambda x: (x.active != False), cars))
     # Draw cars
-    draw_cars(cars)
+    draw_cars(SCREEN, cars)
     # Draw player car
-    draw_my_car(my_car)
-    check_if_lost(cars, my_car)
-
+    draw_my_car(SCREEN, my_car)
+    # check_if_lost(cars, my_car)
     # Increase a frame counter
     counter += 1
     # Perform this action every frame
@@ -62,6 +63,10 @@ while 1:
         # Collect data by playing autopilot mode
         autopilot(data, cars, my_car)
 
-        # Perform this action every 2 frames
+    # Perform this action every 2 frames
     if counter % 2 == 0:
         add_new_car(cars)
+
+    check_if_lost(stop, cars, my_car)
+
+    pygame.display.flip()

@@ -1,4 +1,4 @@
-import src.constants.constants as vals
+import constants.constants as vals
 
 
 class Car:
@@ -23,7 +23,7 @@ class My_car(Car):
         if direction == "left" and self.x > vals.MARGIN + vals.LINE_WIDTH/2:
             # 80 is the distance between the road lines
             self.x = self.x - vals.CAR_HEIGHT
-        elif direction == "right" and self.x < self.width - vals.CAR_WIDTH:
+        elif direction == "right" and self.x < vals.WIDTH - vals.CAR_WIDTH:
             self.x = self.x + vals.CAR_HEIGHT
 
 

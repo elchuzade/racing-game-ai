@@ -1,15 +1,24 @@
 import pygame
 import random
-from src.helpers.core import *
-import src.constants.constants as vals
+from helpers.core import *
+import constants.constants as vals
 import numpy as np
+
+
+def initialize_screen():
+    # Size is the game screen size in pixels
+    SIZE = width, height = vals.WIDTH, vals.HEIGHT
+    SCREEN = pygame.display.set_mode(SIZE)
+    pygame.display.flip()
+
+    return SCREEN
 
 
 def add_new_car(cars):
     # add_new_car will add a new enemy_car on the top level of one of the lines picked randomly
     index = random.randint(0, 2)
     # Y coordinate of new cars
-    y = vals.MARGIN + vals.CAR_WIDTH
+    y = vals.MARGIN + vals.CAR_HEIGHT/2
     if index == 0:
         # Center of first line
         x = vals.MARGIN + vals.CAR_WIDTH/2
@@ -17,8 +26,8 @@ def add_new_car(cars):
         # Center of second line
         x = vals.MARGIN + vals.CAR_WIDTH/2 + vals.LINE_WIDTH
     elif index == 2:
-        x = 200  # third line
-
+        # Center of third line
+        x = vals.MARGIN + vals.CAR_WIDTH/2 + vals.LINE_WIDTH*2
     car = Enemy_car(x, y)
     cars.append(car)
 
@@ -34,38 +43,36 @@ def deactivate_cars(cars):
     # deactivate_cars checks if a car is outside of map boundaries and deactivates it
     for car in cars:
         # If the enemy_car has reached the bottom of any road line, deactivate it
-        if car.y >= vals.HEIGHT - vals.MARGIN - vals.CAR_HEIGHT/2:
+        if car.y > vals.HEIGHT - vals.MARGIN - vals.CAR_HEIGHT/2:
             car.active = False
-    # filter out not active cars
-    cars = list(filter(lambda x: (x.active != False), cars))
 
 
-def draw_cars(cars):
+def draw_cars(screen, cars):
     # draw_cars will draw each car from cars array on screen using its icon
     for car in cars:
-        vals.SCREEN.blit(
+        screen.blit(
             vals.ENEMY_CAR, (car.x - car.width/2, car.y - car.height/2))
 
 
-def draw_my_car(my_car):
+def draw_my_car(screen, my_car):
     # draw_my_car will draw my car on screen using its icon
-    vals.SCREEN.blit(vals.MY_CAR, (my_car.x - my_car.width /
-                                   2, my_car.y - my_car.height/2))
+    screen.blit(vals.MY_CAR, (my_car.x - my_car.width /
+                             2, my_car.y - my_car.height/2))
 
 
-def draw_vertical_lines():
+def draw_vertical_lines(screen):
     # draw left vertical line to separate roads
-    pygame.draw.rect(vals.SCREEN, vals.GREY,
+    pygame.draw.rect(screen, vals.GREY,
                      (vals.LINE_WIDTH - vals.ROAD_LINE_WIDTH / 2, 0, vals.ROAD_LINE_WIDTH, vals.HEIGHT))
     # draw right vertical line to separate roads
-    pygame.draw.rect(vals.SCREEN, vals.GREY, (vals.LINE_WIDTH *
-                                              2 - vals.ROAD_LINE_WIDTH / 2, 0, vals.ROAD_LINE_WIDTH, vals.HEIGHT))
+    pygame.draw.rect(screen, vals.GREY, (vals.LINE_WIDTH *
+                                         2 - vals.ROAD_LINE_WIDTH / 2, 0, vals.ROAD_LINE_WIDTH, vals.HEIGHT))
 
 
 def map_cars_to_lines(cars, my_car):
     # lines will represent 3 arrays corresponsding to 3 vertical road lines
-    lines = [[0, 0, 0, 0, 0, 0, 0], [
-        0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+    lines = [[0, 0, 0, 0, 0, 0, 0, 0], [
+        0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
     for car in cars:
         # 2 is a label for enemy cars
         coord_x = car.x // vals.LINE_WIDTH
@@ -114,7 +121,7 @@ def find_all_distances(lines):
 
 def choose_action(cars, my_car):
     # Decide to either go left right or stay at still and Return a tuple of decision, my_position, all_distances
-    
+
     # Find X index of my position
     my_position = find_my_position(my_car)
     # Find state of each road line
@@ -127,14 +134,14 @@ def choose_action(cars, my_car):
     # I am on the left most, best line on the right most
     if my_position + 1 < max_index:
         # Check if there is a car in the middle
-        if all_distances[1] > 1:
+        if all_distances[1] > 1 or all_distances[1] == 0:
             return "right", my_position, all_distances
         else:
             return "stay", my_position, all_distances
     # I am on the right most, best line on the left most
     elif my_position - 1 > max_index:
         # Check if there is a car in the middle
-        if all_distances[1] > 1:
+        if all_distances[1] > 1 or all_distances[1] == 0:
             return "left", my_position, all_distances
         else:
             return "stay", my_position, all_distances
@@ -153,12 +160,13 @@ def perform_action(action, my_car):
     my_car.move(action)
 
 
-def check_if_lost(cars, my_car):
+def check_if_lost(stop, cars, my_car):
     # For all cars on map check if x and y coordinates are equal to my_car's
     for car in cars:
         if car.x == my_car.x and car.y == my_car.y:
-            pygame.quit()
-            raise SystemExit
+            stop = True
+            # pygame.quit()
+            # raise SystemExit
 
 
 def save_data_row(data, action, my_position, all_distances):
@@ -205,4 +213,4 @@ def autopilot(data, cars, my_car):
     move_cars(cars)
     action, my_position, all_distances = choose_action(cars, my_car)
     perform_action(action, my_car)
-    save_data_row(data, action , my_position, all_distances)
+    save_data_row(data, action, my_position, all_distances)
