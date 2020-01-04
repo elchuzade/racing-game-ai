@@ -24,7 +24,7 @@ while 1:
     clock.tick(30)
     pygame.event.pump()
     for event in pygame.event.get():
-                # Look for any button press action
+        # Look for any button press action
         if event.type == pygame.KEYDOWN:
             # Press Left key to move my_car to left
             if event.key == pygame.K_LEFT:
@@ -37,7 +37,7 @@ while 1:
                 pygame.quit()
                 raise SystemExit
 
-                # Quit the game if the X symbol is clicked
+        # Quit the game if the X symbol is clicked
         if event.type == pygame.QUIT:
             pygame.quit()
             raise SystemExit
@@ -48,16 +48,20 @@ while 1:
     draw_vertical_lines()
     # Remove cars that are out of map boundaries
     deactivate_cars(cars)
-    
-	# Draw cars
+
+    # Draw cars
     draw_cars(cars)
     # Draw player car
     draw_my_car(my_car)
     check_if_lost(cars, my_car)
 
-	# Increase a frame counter
+    # Increase a frame counter
     counter += 1
     # Perform this action every frame
     if counter % 1 == 0:
         # Collect data by playing autopilot mode
         autopilot(data, cars, my_car)
+
+        # Perform this action every 2 frames
+    if counter % 2 == 0:
+        add_new_car(cars)

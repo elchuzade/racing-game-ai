@@ -19,7 +19,7 @@ def add_new_car(cars):
     elif index == 2:
         x = 200  # third line
 
-    car = Car(x, y)
+    car = Enemy_car(x, y)
     cars.append(car)
 
 
