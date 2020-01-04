@@ -20,7 +20,7 @@ class My_car(Car):
     def move(self, direction):
         # move method allows to move the car to the left or right
         # 40 is the distance form the left wall to the center of the 1st road line
-        if direction == "left" and self.x > 40:
+        if direction == "left" and self.x > vals.MARGIN + vals.LINE_WIDTH/2:
             # 80 is the distance between the road lines
             self.x = self.x - vals.CAR_HEIGHT
         elif direction == "right" and self.x < self.width - vals.CAR_WIDTH:
