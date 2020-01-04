@@ -18,8 +18,15 @@ data = []
 
 my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 
+# Stop will be set True when you lose
 stop = False
-ai = True
+# Set ai_mode false if you want to play in autopilot mode to collect data
+ai = False
+# Set True if you want to collect state at every frame for data analytics
+collect_data = True
+# Decide on amount of rows after which data should be saved
+rows = 500
+
 counter = 0
 while stop == False:
     # limit runtime speed to 30 frames/second
@@ -61,16 +68,24 @@ while stop == False:
     counter += 1
     # Perform this action every frame
     if counter % 1 == 0:
-        # Collect data by playing autopilot mode
         if ai == True:
+            # Test your ai model's performance
             ai_model(model, cars, my_car)
         else:
+            # Collect data by playing autopilot mode
             autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
     if counter % 2 == 0:
         add_new_car(cars)
 
+    if collect_data == True:
+        if counter == rows:
+            save_data(data, rows)
+        elif counter <= rows:
+            print("Counter - ", counter, " / ", rows)
+
     check_if_lost(stop, cars, my_car)
 
+    # update display
     pygame.display.flip()

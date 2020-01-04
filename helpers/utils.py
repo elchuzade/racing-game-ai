@@ -2,6 +2,7 @@ import pygame
 import random
 from helpers.core import *
 import constants.constants as vals
+from data.data import *
 import numpy as np
 
 
@@ -169,7 +170,14 @@ def check_if_lost(stop, cars, my_car):
             # raise SystemExit
 
 
+def save_data(data, rows):
+    # Writes all info from data into corresponding file
+    write_data(data)
+    print("Saved data into file named - " + "file " + str(len(data)))
+
+
 def save_data_row(data, action, my_position, all_distances):
+    # Saves each row into a data array for future data analytics
     if action == "left":
         action_index = 0
     elif action == "stay":
