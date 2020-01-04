@@ -18,12 +18,6 @@ data = []
 
 my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 
-
-def autopilot(cars):
-    move_cars(cars)
-    action, my_position, all_distances = choose_action(cars, my_car)
-
-
 counter = 0
 while 1:
     # limit runtime speed to 30 frames/second
@@ -54,9 +48,16 @@ while 1:
     draw_vertical_lines()
     # Remove cars that are out of map boundaries
     deactivate_cars(cars)
-    # Increase a frame counter
+    
+	# Draw cars
+    draw_cars(cars)
+    # Draw player car
+    draw_my_car(my_car)
+    check_if_lost(cars, my_car)
+
+	# Increase a frame counter
     counter += 1
     # Perform this action every frame
     if counter % 1 == 0:
         # Collect data by playing autopilot mode
-        autopilot(cars)
+        autopilot(data, cars, my_car)

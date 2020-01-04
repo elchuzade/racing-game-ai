@@ -87,7 +87,7 @@ def find_my_position(my_car):
 def find_closest_car(lines, index):
     # find a return the distance to the first car on a line given by index
     # count is to return distance 1 step higher then amount of rows incase no cars were found in the line
-    count = 1
+    count = 0
     for i in range(len(lines[index])):
         if lines[index][len(lines[index]) - 1 - i] == 2:
             return i
@@ -198,3 +198,11 @@ def predict(input_array, model):
 def build_input_state(my_position, all_distances):
     # Turns all input variables into a single array
     return [my_position, all_distances[0], all_distances[1], all_distances[2]]
+
+
+def autopilot(data, cars, my_car):
+    # Autopilot will play the game infinitely to collect data
+    move_cars(cars)
+    action, my_position, all_distances = choose_action(cars, my_car)
+    perform_action(action, my_car)
+    save_data_row(data, action , my_position, all_distances)
