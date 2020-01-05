@@ -22,26 +22,30 @@ my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 # Stop will be set True when you lose
 stop = False
 # Set ai_mode false if you want to play in autopilot mode to collect data
-ai = False
+ai = True
 # Set True if you want to collect state at every frame for data analytics
-collect_data = True
+collect_data = False
 # Decide on amount of rows after which data should be saved
 rows = 20000
+# Controls allow player to move car around regardless of the autopilot or ai decisions
+player_control = False
 
 counter = 0
 while 1:
     # limit runtime speed to 30 frames/second
-    clock.tick(60)
+    clock.tick(30)
     pygame.event.pump()
     for event in pygame.event.get():
         # Look for any button press action
         if event.type == pygame.KEYDOWN:
             # Press Left key to move my_car to left
             if event.key == pygame.K_LEFT:
-                my_car.move("left")
+                if player_control == True:
+                    my_car.move("left")
             # Press Right key to move my_car to right
             elif event.key == pygame.K_RIGHT:
-                my_car.move("right")
+                if player_control == True:
+                    my_car.move("right")
             # Press Escape key to quit game
             elif event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -64,7 +68,7 @@ while 1:
     # Increase a frame counter
     counter += 1
     # Perform this action every frame
-    if counter % 1 == 0 and stop == False:
+    if counter % 30 == 0 and stop == False:
         if ai == True:
             # Test your ai model's performance
             ai_model(model, cars, my_car)
@@ -73,7 +77,7 @@ while 1:
             autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
-    if counter % 2 == 0 and stop == False:
+    if counter % 60 == 0 and stop == False:
         add_new_car(cars)
 
     # Draw cars
