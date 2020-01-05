@@ -5,7 +5,7 @@ from helpers.core import *
 import constants.constants as vals
 from data.data import *
 
-model = load_model('./models/categorical_crossentropy_10k.h5')
+model = load_model('./models/categorical_crossentropy.h5')
 
 pygame.init()
 
@@ -26,12 +26,12 @@ ai = False
 # Set True if you want to collect state at every frame for data analytics
 collect_data = True
 # Decide on amount of rows after which data should be saved
-rows = 10000
+rows = 20000
 
 counter = 0
-while stop == False:
+while 1:
     # limit runtime speed to 30 frames/second
-    clock.tick(30)
+    clock.tick(60)
     pygame.event.pump()
     for event in pygame.event.get():
         # Look for any button press action
@@ -60,15 +60,11 @@ while stop == False:
     deactivate_cars(cars)
     # filter out not active cars
     cars = list(filter(lambda x: (x.active != False), cars))
-    # Draw cars
-    draw_cars(SCREEN, cars)
-    # Draw player car
-    draw_my_car(SCREEN, my_car)
     # check_if_lost(cars, my_car)
     # Increase a frame counter
     counter += 1
     # Perform this action every frame
-    if counter % 30 == 0:
+    if counter % 1 == 0 and stop == False:
         if ai == True:
             # Test your ai model's performance
             ai_model(model, cars, my_car)
@@ -77,16 +73,24 @@ while stop == False:
             autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
-    if counter % 60 == 0:
+    if counter % 2 == 0 and stop == False:
         add_new_car(cars)
 
-    if collect_data == True:
+    # Draw cars
+    draw_cars(SCREEN, cars)
+    # Draw player car
+    draw_my_car(SCREEN, my_car)
+
+    if collect_data == True and stop == False:
         if counter == rows:
             save_data(data)
-        # elif counter <= rows:
-            # print("Counter - ", counter, " / ", rows)
+        elif counter <= rows:
+            print("Counter - ", counter, " / ", rows)
 
-    check_if_lost(stop, cars, my_car)
+    if (stop == False):
+        stop = check_if_lost(stop, cars, my_car)
+        if (stop == True):
+            print("stop - ", stop)
 
     # update display
     pygame.display.flip()

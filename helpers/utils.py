@@ -89,20 +89,20 @@ def map_cars_to_lines(cars, my_car):
 
 def find_my_position(my_car):
     # returns index of a line my car is at (0 or 1 or 2)
-    return my_car.x // vals.LINE_WIDTH
+    return int(my_car.x // vals.LINE_WIDTH)
 
 
 def find_closest_car(lines, index):
     # Find and return the distance to the first car on a line given by index
-    count = 0
+    count = -1
     # Loops through each line and finds the number 2 which represents the enemy car
-    for i in range(len(lines[index])):
+    for i in reversed(lines[index]):
         # When found an enemy car returns a distance from my car to enemy car
-        if lines[index][len(lines[index]) - 1 - i] == 2:
-            return i
+        if i == 2:
+            return count
         count += 1
-    # Returns length - 1 if there are no enemy cars ( -1 because 1 line is under my car ie invisible and 7 lines are on the map, so the top line should be index as 7)
-    return count - 1
+    # If there are no cars on the line, returns max possible number ie length of the line
+    return count
 
 
 def find_all_distances(lines):
@@ -133,29 +133,31 @@ def choose_action(cars, my_car):
     # Find the safest line
     max_index = all_distances.index(max(all_distances))
 
+    action = ""
     # I am on the left most, best line on the right most
     if my_position + 1 < max_index:
         # Check if there is a car in the middle
         if all_distances[1] > 1 or all_distances[1] == 0:
-            return "right", my_position, all_distances
+            action = "right"
         else:
-            return "stay", my_position, all_distances
+            action = "stay"
     # I am on the right most, best line on the left most
     elif my_position - 1 > max_index:
         # Check if there is a car in the middle
         if all_distances[1] > 1 or all_distances[1] == 0:
-            return "left", my_position, all_distances
+            action = "left"
         else:
-            return "stay", my_position, all_distances
+            action = "stay"
     # I am one step to the left of the best line
     elif my_position < max_index:
-        return "right", my_position, all_distances
+        action = "right"
     # I am one step to the right of the best line
     elif my_position > max_index:
-        return "left", my_position, all_distances
+        action = "left"
     # I am one on the best line
     else:
-        return "stay", my_position, all_distances
+        action = "stay"
+    return action, my_position, all_distances
 
 
 def perform_action(action, my_car):
@@ -166,9 +168,10 @@ def check_if_lost(stop, cars, my_car):
     # For all cars on map check if x and y coordinates are equal to my_car's
     for car in cars:
         if car.x == my_car.x and car.y == my_car.y:
-            stop = True
-            pygame.quit()
-            raise SystemExit
+            print("Ops! You crashed!")
+            return True
+            
+    return False
 
 
 def save_data_row(data, action, my_position, all_distances):
@@ -216,18 +219,18 @@ def build_input_state(cars, my_car):
 
 def autopilot(data, cars, my_car):
     # Autopilot will play the game infinitely to collect data
-    move_cars(cars)
     action, my_position, all_distances = choose_action(cars, my_car)
     perform_action(action, my_car)
     save_data_row(data, action, my_position, all_distances)
+    move_cars(cars)
 
 
 def ai_model(model, cars, my_car):
     # AI will put state into model, predict the action and perform it
-    move_cars(cars)
     # Build input array for ai model
     input_state = build_input_state(cars, my_car)
     # Pass input through model to find action
     action = predict(input_state, model)
     # Perform the action suggested by ai model
     perform_action(action, my_car)
+    move_cars(cars)

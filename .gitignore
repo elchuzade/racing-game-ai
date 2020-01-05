@@ -1,2 +1,4 @@
 __pycache__/
 *.py[cod]
+*/.ipynb_checkpoints/*.ipynb
+notebooks/.ipynb_checkpoints/*.ipynb

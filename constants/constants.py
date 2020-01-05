@@ -15,7 +15,7 @@ CAR_HEIGHT = 80
 # Distance between centers of vertical lines
 LINE_WIDTH = 80
 # Initial coordinates of my car
-MY_CAR_X = MARGIN + CAR_WIDTH/2 + LINE_WIDTH
+MY_CAR_X = MARGIN + CAR_WIDTH/2
 MY_CAR_Y = HEIGHT - MARGIN - CAR_HEIGHT/2
 
 # Colors in a format accepted by pygame
