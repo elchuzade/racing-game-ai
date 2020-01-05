@@ -84,7 +84,7 @@ while 1:
     draw_cars(SCREEN, cars)
     # Draw player car
     draw_my_car(SCREEN, my_car)
-
+    print(counter)
     if collect_data == True and stop == False:
         if counter == rows:
             save_data(data)
