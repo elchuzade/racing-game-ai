@@ -8,6 +8,7 @@ from data.data import *
 model = load_model('./models/categorical_crossentropy.h5')
 
 pygame.init()
+pygame.display.set_caption('Racing Car AI')
 
 SCREEN = initialize_screen()
 
