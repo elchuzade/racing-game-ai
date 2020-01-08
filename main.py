@@ -20,21 +20,19 @@ data = []
 
 my_car = My_car(vals.MY_CAR_X, vals.MY_CAR_Y)
 
-# Stop will be set True when you lose
-stop = False
 # Set ai_mode false if you want to play in autopilot mode to collect data
 ai = True
 # Set True if you want to collect state at every frame for data analytics
 collect_data = False
 # Decide on amount of rows after which data should be saved
-rows = 20000
+rows = vals.DATA_ROWS
 # Controls allow player to move car around regardless of the autopilot or ai decisions
 player_control = False
 
 counter = 0
 while 1:
     # limit runtime speed to 30 frames/second
-    clock.tick(30)
+    clock.tick(vals.FRAME_RATE)
     pygame.event.pump()
     for event in pygame.event.get():
         # Look for any button press action
@@ -69,7 +67,7 @@ while 1:
     # Increase a frame counter
     counter += 1
     # Perform this action every frame
-    if counter % 30 == 0 and stop == False:
+    if counter % vals.ACTION_PERFORM_RATE == 0:
         if ai == True:
             # Test your ai model's performance
             ai_model(model, cars, my_car)
@@ -78,24 +76,19 @@ while 1:
             autopilot(data, cars, my_car)
 
     # Perform this action every 2 frames
-    if counter % 60 == 0 and stop == False:
+    if counter % (vals.ACTION_PERFORM_RATE*2) == 0:
         add_new_car(cars)
 
     # Draw cars
     draw_cars(SCREEN, cars)
     # Draw player car
     draw_my_car(SCREEN, my_car)
-    print(counter)
-    if collect_data == True and stop == False:
+
+    if collect_data == True:
         if counter == rows:
             save_data(data)
         elif counter <= rows:
             print("Counter - ", counter, " / ", rows)
-
-    if (stop == False):
-        stop = check_if_lost(stop, cars, my_car)
-        if (stop == True):
-            print("stop - ", stop)
 
     # update display
     pygame.display.flip()

@@ -52,12 +52,12 @@ def draw_cars(screen, cars):
     # draw_cars will draw each car from cars array on screen using its icon
     for car in cars:
         screen.blit(
-            vals.ENEMY_CAR, (car.x - car.width/2, car.y - car.height/2))
+            vals.ENEMY_CAR_ICON, (car.x - car.width/2, car.y - car.height/2))
 
 
 def draw_my_car(screen, my_car):
     # draw_my_car will draw my car on screen using its icon
-    screen.blit(vals.MY_CAR, (my_car.x - my_car.width /
+    screen.blit(vals.MY_CAR_ICON, (my_car.x - my_car.width /
                               2, my_car.y - my_car.height/2))
 
 
@@ -164,7 +164,7 @@ def perform_action(action, my_car):
     my_car.move(action)
 
 
-def check_if_lost(stop, cars, my_car):
+def check_if_lost(cars, my_car):
     # For all cars on map check if x and y coordinates are equal to my_car's
     for car in cars:
         if car.x == my_car.x and car.y == my_car.y:

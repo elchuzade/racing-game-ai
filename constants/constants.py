@@ -1,5 +1,11 @@
 import pygame
 
+# Rows to add to csv file
+DATA_ROWS = 20000
+# Frame rate
+FRAME_RATE = 30
+# My car action perform rate
+ACTION_PERFORM_RATE = 30
 # Road line width is for two vertical lines
 ROAD_LINE_WIDTH = 10
 # Margin of the useful map area
@@ -22,5 +28,5 @@ MY_CAR_Y = HEIGHT - MARGIN - CAR_HEIGHT/2
 BLACK = (0, 0, 0)
 GREY = (150, 150, 150)
 
-MY_CAR = pygame.image.load('./img/my_car.png')
-ENEMY_CAR = pygame.image.load('./img/enemy_car.png')
+MY_CAR_ICON = pygame.image.load('./img/my_car.png')
+ENEMY_CAR_ICON = pygame.image.load('./img/enemy_car.png')
