@@ -2,8 +2,8 @@
 
 ### Goals
 
-1 - Implement a 2D Car Racing game environment using Pygame with possible play mode, autopilot mode and ai mode.
-2 - Implement a Neural Network to play the game using Keras with categorical cross entropy loss function.
+- Implement a 2D Car Racing game environment using Pygame with possible play mode, autopilot mode and ai mode.
+- Implement a Neural Network to play the game using Keras with categorical cross entropy loss function.
 
 ### Libraries
 
